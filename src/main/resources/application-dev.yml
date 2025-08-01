@@ -14,62 +14,75 @@ spring:
     type: redis
   # REDIS数据库配置
   redis:
-    # [必须修改] Redis服务器IP, REDIS安装在本机的,使用127.0.0.1
+    # [必须修改] Redis服务器IP地址
+    # 本地部署使用: 127.0.0.1
+    # 远程部署使用: 实际Redis服务器IP
     host: 127.0.0.1
-    # [必须修改] 端口号
+    # [必须修改] Redis服务端口号，默认6379
     port: 6379
-    # [可选] 数据库 DB
-    database: 7
-    # [可选] 访问密码,若你的redis服务器没有设置密码，就不需要用密码去连接
-    password: luna
-    # [可选] 超时时间
+    # [可选] Redis数据库索引，0-15，建议使用6或7避免与其他应用冲突
+    database: 6
+    # [必须修改] Redis访问密码
+    # 生产环境请使用强密码，如果Redis未设置密码则留空
+    password: 
+    # [可选] 连接超时时间(毫秒)，默认10000
     timeout: 10000
-    # mysql数据源
+    # [必须修改] MySQL数据库配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/wvp273数据库统合?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
-    username: root
-    password: 12345678
-#[可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
+    # [必须修改] 数据库连接URL，修改IP、端口、数据库名
+    # 格式: jdbc:mysql://数据库IP:端口/数据库名
+    url: jdbc:mysql://127.0.0.1:3306/wvp_pro?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    # [必须修改] 数据库用户名
+    username: wvp_user
+    # [必须修改] 数据库密码，生产环境请使用强密码
+    password: your_secure_password
+# [可选] WVP服务器HTTP配置
 server:
+  # [可选] WVP服务端口，网页访问和API调用都使用此端口
   port: 18080
-  # [可选] HTTPS配置， 默认不开启
+  # [可选] HTTPS配置，生产环境建议开启
   ssl:
-    # [可选] 是否开启HTTPS访问
+    # [可选] 是否开启HTTPS访问，生产环境建议设为true
     enabled: false
-    # [可选] 证书文件路径，放置在resource/目录下即可，修改xxx为文件名
-    key-store: classpath:test.monitor.89iot.cn.jks
-    # [可选] 证书密码
-    key-store-password: gpf64qmw
-    # [可选] 证书类型， 默认为jks，根据实际修改
+    # [可选] SSL证书文件路径，请替换为你的证书文件名
+    key-store: classpath:your_certificate.jks
+    # [必须修改] SSL证书密码，请替换为你的证书密码
+    key-store-password: your_certificate_password
+    # [可选] 证书类型，支持JKS/PKCS12等格式
     key-store-type: JKS
 
-# 作为28181服务器的配置
+# [必须修改] GB28181国标协议服务配置
 sip:
-  # [可选] 28181服务监听的端口
-  port: 8116
-  # 根据国标6.1.2中规定，domain宜采用ID统一编码的前十位编码。国标附录D中定义前8位为中心编码（由省级、市级、区级、基层编号组成，参照GB/T 2260-2007）
-  # 后两位为行业编码，定义参照附录D.3
-  # 3701020049标识山东济南历下区 信息行业接入
-  # [可选]
-  domain: 4101050000
-  # [可选]
-  id: 41010500002000000001
-  # [可选] 默认设备认证密码，后续扩展使用设备单独密码, 移除密码将不进行校验
-  password: 12345678
-  # 是否存储alarm信息
+  # [可选] GB28181协议服务端口，默认5060
+  port: 5060
+  # [必须修改] 国标平台域编码，根据GB/T 2260-2007及国标附录D规定
+  # 前8位：中心编码(省市区基层编号) + 后2位：行业编码
+  # 示例: 4401020000(广东省广州市荔湾区 信息行业)
+  domain: 4401020000
+  # [必须修改] 国标平台编码(20位)，必须唯一
+  # 格式: domain(10位) + 类型编码(3位) + 网络标识(1位) + 序号(6位)
+  id: 44010200002000000001
+  # [可选] 设备认证密码，不设置则不进行认证校验
+  # 生产环境建议设置强密码
+  password: 
+  # [可选] 是否存储设备告警信息，默认false
   alarm: false
 
-#zlm 默认服务器配置
+# [必须修改] ZLMediaKit流媒体服务器配置
 media:
-  id: zlmediakit-local
-  # [必须修改] zlm服务器的内网IP
-  ip: 192.168.1.10
-  # [必须修改] zlm服务器的http.port
-  http-port: 9092
-  # [必选选] zlm服务器的hook.admin_params=secret
-  secret: TWSYFgYJOQWB4ftgeYut8DW4wbs7pQnj
+  # [必须修改] 流媒体服务器唯一ID，用于区分多个媒体节点
+  id: zlm-server-001
+  # [必须修改] ZLMediaKit服务器IP地址
+  # 本地部署: 127.0.0.1
+  # 远程部署: ZLMediaKit实际IP地址
+  ip: 127.0.0.1
+  # [必须修改] ZLMediaKit HTTP API端口，默认80
+  http-port: 80
+  # [必须修改] ZLMediaKit Hook鉴权密钥，必须与ZLM配置一致
+  # 请生成强随机密钥，保证安全性
+  secret: your_zlm_secret_key
   # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
   rtp:
     # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输

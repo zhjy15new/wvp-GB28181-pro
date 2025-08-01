@@ -276,12 +276,6 @@
             <version>2.7</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/net.sf.kxml/kxml2 -->
-        <!--		<dependency>-->
-        <!--			<groupId>net.sf.kxml</groupId>-->
-        <!--			<artifactId>kxml2</artifactId>-->
-        <!--			<version>2.3.0</version>-->
-        <!--		</dependency>-->
 
         <!-- jwt实现 -->
         <dependency>
@@ -350,11 +344,6 @@
             <scope>provided</scope>
         </dependency>
         <!--LogViewer-->
-<!--        <dependency>-->
-<!--            <groupId>io.github.sevdokimov.logviewer</groupId>-->
-<!--            <artifactId>log-generator</artifactId>-->
-<!--            <version>1.0.10</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>io.github.sevdokimov.logviewer</groupId>

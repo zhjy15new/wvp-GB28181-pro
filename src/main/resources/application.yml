@@ -1,5 +1,8 @@
 spring:
   application:
+    # 应用名称，用于服务标识
     name: wvp
   profiles:
-    active: 274-dev
+    # [必须修改] 激活的配置文件，dev-开发环境，prod-生产环境，docker-容器环境
+    # 根据部署环境选择：dev/prod/docker
+    active: dev
